@@ -25,6 +25,26 @@
             "dependsOn":["UpdateMake"]
         },
         {
+            "label": "build debug no premake",
+            "type": "process",
+            "command": "make",
+            "windows": {
+                "command": "mingw32-make.exe",
+            },
+            "osx": {
+                "args": [
+                    "config=debug_arm64"
+                ],
+            },
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": [
+                "$gcc"
+            ]
+        },
+        {
             "label": "build release",
             "type": "process",
             "command": "make",
@@ -44,7 +64,10 @@
                     "config=release_arm64"
                 ],
             },
-            "group": "build",
+             "group": {
+                "kind": "build",
+                "isDefault": false
+            },
             "problemMatcher": [
                 "$gcc"
             ],
@@ -70,7 +93,10 @@
                     "clean"
                 ],
             },
-            "group": "build",
+             "group": {
+                "kind": "build",
+                "isDefault": false
+            },
             "problemMatcher": [
                 "$gcc"
             ],
@@ -95,7 +121,30 @@
             "osx": {
                 "command": "premake5.osx"
             },
-            "group": "build"
+            "group": "build",
+            "dependsOn": ["Generate compile_commands.json"]
+        },
+        {
+            "label": "Generate compile_commands.json",
+            "type": "process",
+            "command": "./premake5",
+            "options": {
+                "cwd": "${workspaceFolder}/build/"
+            },
+            "args": [
+                "ecc"
+            ],
+            "windows": {
+                "command": "./premake5.exe"
+            },
+            "linux": {
+                "command": "./premake5"
+            },
+            "osx": {
+                "command": "premake5.osx"
+            },
+            "group": "build",
+            "problemMatcher": []
         }
     ]
 }
